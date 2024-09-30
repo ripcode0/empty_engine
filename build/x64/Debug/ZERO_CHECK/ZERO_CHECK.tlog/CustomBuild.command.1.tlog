@@ -1,0 +1,10 @@
+^C:\@RIPCODE\EMPTY_ENGINE\BUILD\CMAKEFILES\0C1BF0A5DB9A57BDB0DDAA19767714C1\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/@ripcode/empty_engine -BC:/@ripcode/empty_engine/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/@ripcode/empty_engine/build/empty-engine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

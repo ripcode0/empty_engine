@@ -1,0 +1,6 @@
+C:\@ripcode\empty_engine\empty\graphics\context.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\context.obj
+C:\@ripcode\empty_engine\empty\graphics\graphics.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\graphics.obj
+C:\@ripcode\empty_engine\empty\graphics\opengl\gl_buffer.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\gl_buffer.obj
+C:\@ripcode\empty_engine\empty\graphics\opengl\gl_context.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\gl_context.obj
+C:\@ripcode\empty_engine\empty\graphics\opengl\gl_input_layout.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\gl_input_layout.obj
+C:\@ripcode\empty_engine\empty\window\window.cpp;C:\@ripcode\empty_engine\build\empty\empty.dir\Debug\window.obj

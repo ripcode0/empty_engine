@@ -1,0 +1,4 @@
+C:/@ripcode/empty_engine/build/CMakeFiles/ALL_BUILD.dir
+C:/@ripcode/empty_engine/build/CMakeFiles/ZERO_CHECK.dir
+C:/@ripcode/empty_engine/build/empty/CMakeFiles/empty.dir
+C:/@ripcode/empty_engine/build/sample/CMakeFiles/sample.dir

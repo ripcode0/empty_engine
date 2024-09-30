@@ -1,0 +1,10 @@
+^C:\@RIPCODE\EMPTY_ENGINE\SAMPLE\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/@ripcode/empty_engine -BC:/@ripcode/empty_engine/build --check-stamp-file C:/@ripcode/empty_engine/build/sample/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

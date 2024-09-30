@@ -1,0 +1,4 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : Access to the path 'c:\@ripcode\empty_engine\bin\sample.exe' is denied.
+  Building Custom Rule C:/@ripcode/empty_engine/sample/CMakeLists.txt
+  main.cpp
+LINK : fatal error LNK1104: cannot open file 'C:\@ripcode\empty_engine\bin\sample.exe'
