@@ -5,7 +5,7 @@
 namespace emt
 {
     #define  max_vertex_buffer_binding  32
-    class gl_context : public graphics_context
+    class gl_context : public context
     {
         public:
         gl_context(uint cx, uint cy, HWND hwnd, bool vsync);
@@ -23,14 +23,16 @@ namespace emt
             const uint* strides) override;
 
         virtual void set_index_buffer_t(ibuffer* buffer, vertex_format format) override;
-        void draw_indexed_t(uint count);
+        void set_vertex_shader_t(const shader* shader) override;
+        void set_pixel_shader_t(const shader* shader) override;
+        void draw_indexed_t(uint count, uint offset) override;
         void swap_buffers_t() override;
 
         HGLRC m_glrc{};
         HDC m_dc{};
 
 
-        struct gl_vertex_iasm
+        struct vertex_memory_layout
         {
             uint slot;
             uint count;
@@ -39,10 +41,11 @@ namespace emt
             int strides[max_vertex_buffer_binding];
         };
 
-        gl_vertex_iasm m_asm{};
+        vertex_memory_layout m_asm{};
         uint m_vao{};
-
         uint m_ibo{};
+
+        uint m_shader_pipeline{};
         
 
 

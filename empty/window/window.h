@@ -18,11 +18,11 @@ namespace emt
         ~window();
         uint m_cx;
         uint m_cy;
-
+        
         char m_title[128]{};
 
         HWND m_hwnd;
-        graphics_context* m_context;
+        context* m_context;
 
         int exec(scene* scene);
     };

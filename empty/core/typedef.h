@@ -1,6 +1,6 @@
 #pragma once
 
-//demical
+#include "core/defines.h"
 
 typedef unsigned char   uint8, byte; 
 typedef unsigned int    uint, uint32;
@@ -111,7 +111,7 @@ namespace emt
     };
     
     class scene;
-    class graphics_context;
+    class context;
 
     struct ibuffer;
     struct vertex_buffer;

@@ -15,14 +15,14 @@ namespace emt
         static void init();
         static void release();
 
-        static void create_vertex_buffer(
+        static void create_buffer(
             const buffer_create_info& info, ibuffer** pp_buffer);
 
         static void create_input_layout(
             const input_layout_create_info& info, input_layout** pp_input_layout
         );
 
-        static void create_shader(const char* file, shader** pp_shader);
+        static void create_shader(const char* file, shader_type type, shader** pp_shader);
 
     private:
         static std::vector<std::shared_ptr<ibuffer>> m_buffers;        

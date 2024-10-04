@@ -16,6 +16,9 @@
     <ClCompile Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_input_layout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="C:\@ripcode\empty_engine\empty\window\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -25,6 +28,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\@ripcode\empty_engine\empty\core\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\@ripcode\empty_engine\empty\core\defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\@ripcode\empty_engine\empty\core\file_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\@ripcode\empty_engine\empty\core\typedef.h">

@@ -18,6 +18,8 @@ namespace emt
         ibuffer* m_vbo{};
         ibuffer* m_ibo{};
         input_layout* m_input_layout{};
+        shader* m_vs;
+        shader* m_ps;
 
     };    
 } // namespace emt

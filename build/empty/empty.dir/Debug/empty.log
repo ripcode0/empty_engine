@@ -1,6 +1,1 @@
-﻿  Building Custom Rule C:/@ripcode/empty_engine/empty/CMakeLists.txt
-  graphics.cpp
-  gl_vertex_buffer.cpp
-  window.cpp
-  Generating Code...
-  empty.vcxproj -> C:\@ripcode\empty_engine\lib\empty.lib
+﻿  empty.vcxproj -> C:\@ripcode\empty_engine\lib\empty.lib

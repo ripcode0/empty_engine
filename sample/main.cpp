@@ -7,6 +7,7 @@ using namespace emt;
 #include "graphics/graphics.h"
 #include "graphics/context.h"
 #include "scenes/triangle_scene.h"
+#include "core/config.h"
 
 int main(int args, char* argv[])
 {
@@ -17,9 +18,9 @@ int main(int args, char* argv[])
     
     emt::window window(info);
 
-    
+    log_error("fix it here %s", "data");    
     triangle_scene scene_00;
-
+    
     int res = window.exec(&scene_00);
 
     return res;

@@ -271,6 +271,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClInclude Include="C:\@ripcode\empty_engine\empty\common\binary.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\core\config.h" />
+    <ClInclude Include="C:\@ripcode\empty_engine\empty\core\defines.h" />
+    <ClInclude Include="C:\@ripcode\empty_engine\empty\core\file_system.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\core\typedef.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\core\vertex_type.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\graphics\buffer.h" />
@@ -288,6 +290,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_context.h" />
     <ClCompile Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_input_layout.cpp" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_input_layout.h" />
+    <ClCompile Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_shader.cpp" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\graphics\opengl\gl_shader.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\graphics\shader.h" />
     <ClInclude Include="C:\@ripcode\empty_engine\empty\math\vec3.h" />

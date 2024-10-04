@@ -2,17 +2,21 @@
 #include "graphics/opengl/gl_config.h"
 #include "graphics/opengl/gl_input_layout.h"
 #include "graphics/opengl/gl_buffer.h"
+#include "graphics/opengl/gl_shader.h"
 
 namespace emt
 {
     gl_context::gl_context(uint cx, uint cy, HWND hwnd, bool vsync)
-        : graphics_context(cx, cy, hwnd, graphics_api::opengl, vsync)
+        : context(cx, cy, hwnd, graphics_api::opengl, vsync)
     {
         wglad::create_context_from_hwnd(hwnd, &m_glrc, &m_dc);
+        glCreateProgramPipelines(1, &m_shader_pipeline);
+        glBindProgramPipeline(m_shader_pipeline);
     }
 
     gl_context::~gl_context()
     {
+        glDeleteProgramPipelines(1, &m_shader_pipeline);
         wglad::release_context(m_hwnd, m_glrc, m_dc);
     }
 
@@ -72,7 +76,26 @@ namespace emt
         }
     }
 
-    void gl_context::draw_indexed_t(uint count)
+    void gl_context::set_vertex_shader_t(const shader *shader)
+    {
+        if(shader->type != shader_type::vertex){
+            return;
+        }
+        uint vs = ((gl_shader*)shader)->program;
+        glUseProgramStages(m_shader_pipeline, GL_VERTEX_SHADER_BIT, vs);
+    }
+
+    void gl_context::set_pixel_shader_t(const shader *shader)
+    {
+        
+        if(shader->type != shader_type::pixel){
+            return;
+        }
+        uint ps = ((gl_shader*)shader)->program;
+        glUseProgramStages(m_shader_pipeline, GL_FRAGMENT_SHADER_BIT, ps);
+    }
+
+    void gl_context::draw_indexed_t(uint count, uint offset)
     {
         #ifdef _DEBUG
         if(!m_asm.buffers[0] && !m_vao && !m_ibo){
@@ -82,7 +105,7 @@ namespace emt
         
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
-
+    
     void gl_context::swap_buffers_t()
     {
         ::SwapBuffers(m_dc);

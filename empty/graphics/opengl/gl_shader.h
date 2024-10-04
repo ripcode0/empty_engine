@@ -6,7 +6,12 @@ namespace emt
 {
     struct gl_shader : shader
     {
-        uint program;
+        gl_shader(const char* filename, shader_type type);
+        
+        operator GLuint(){
+            return program;
+        }
+        GLuint program;
     };
     
 } // namespace emt
