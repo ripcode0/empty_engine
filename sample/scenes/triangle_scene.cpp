@@ -20,7 +20,8 @@ namespace emt
         graphics::create_buffer(buffer_info, &m_vbo);
 
         uint indices[] = { 0,1,2};
-
+        
+        buffer_info = {};
         buffer_info.p_data = indices;
         buffer_info.size = sizeof(uint) * _countof(indices);
         buffer_info.type = bufffer_type::index;
@@ -39,8 +40,9 @@ namespace emt
         graphics::create_input_layout(input_info, &m_input_layout);
      
 
-        graphics::create_shader("test_vs", shader_type::vertex, &m_vs);
-        graphics::create_shader("test_ps", shader_type::pixel, &m_ps);
+        graphics::create_shader("../data/shaders/glsl/test_vs", shader_type::vertex, &m_vs);
+        graphics::create_shader("../data/shaders/glsl/test_ps", shader_type::pixel, &m_ps);
+        graphics::create_shader("../data/shaders/glsl/bind_ps", shader_type::pixel, &m_test);
 
         context::set_vertex_shader(m_vs);
         context::set_pixel_shader(m_ps);
@@ -67,8 +69,11 @@ namespace emt
         // uint stride = sizeof(vertex_pc);
         
         // graphics_context::set_vertex_buffer(0, 1, vertex_buffers, &offset, &stride);
+        context::set_pixel_shader(m_test);
 
         context::draw_indexed(3,0);
+
+        
 
         context::swap_buffers();
     }

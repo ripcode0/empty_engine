@@ -3,6 +3,7 @@
 #include "graphics/opengl/gl_input_layout.h"
 #include "graphics/opengl/gl_buffer.h"
 #include "graphics/opengl/gl_shader.h"
+#include "core/config.h"
 
 namespace emt
 {
@@ -87,8 +88,7 @@ namespace emt
 
     void gl_context::set_pixel_shader_t(const shader *shader)
     {
-        
-        if(shader->type != shader_type::pixel){
+        if(shader->type != shader_type::pixel){       
             return;
         }
         uint ps = ((gl_shader*)shader)->program;

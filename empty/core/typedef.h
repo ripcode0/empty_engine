@@ -58,6 +58,11 @@ namespace emt
     {
         vertex, index, uniform, unkown
     };
+
+    enum class buffer_usage
+    {
+        gpu_read, gpu_read_write
+    };
     
     struct buffer_create_info
     {
@@ -78,8 +83,10 @@ namespace emt
 
     enum class format : uint
     {
-        r8,
-        rgb8,
+        r8_uint,
+        rg8_uint,
+        rgb8_uint,
+        rgba8_uint,
         rgba8,
         r16,
         rgb16,
@@ -88,6 +95,13 @@ namespace emt
         rgb32, 
         rgba32
     };
+
+    enum furmat{
+        r8_uint,
+        r8_unorm,
+
+    };
+    
 
     struct vertex_attrib
     {

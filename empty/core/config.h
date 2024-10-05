@@ -50,7 +50,8 @@ inline void __log_error(const char* code, const char* filename, int line, ...)
     char buffer[256]{};
     sprintf_s(buffer, "file : %s\nline : %d\n\n%s\n", filename, line, codeBuffer);
 
-    MessageBoxA(nullptr, buffer, "fatal error!", MB_OKCANCEL);
+    auto res = MessageBoxA(nullptr, buffer, "fatal error!", MB_OKCANCEL);
+    if(res == MB_OK) ExitProcess(0);
 }
 
 

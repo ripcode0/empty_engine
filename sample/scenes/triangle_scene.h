@@ -20,6 +20,8 @@ namespace emt
         input_layout* m_input_layout{};
         shader* m_vs;
         shader* m_ps;
+        shader* m_test;
+        
 
     };    
 } // namespace emt
