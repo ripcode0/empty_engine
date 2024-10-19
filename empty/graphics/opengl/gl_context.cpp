@@ -4,6 +4,7 @@
 #include "graphics/opengl/gl_buffer.h"
 #include "graphics/opengl/gl_shader.h"
 #include "core/config.h"
+#include "graphics/graphics.h"
 
 namespace emt
 {
@@ -13,10 +14,14 @@ namespace emt
         wglad::create_context_from_hwnd(hwnd, &m_glrc, &m_dc);
         glCreateProgramPipelines(1, &m_shader_pipeline);
         glBindProgramPipeline(m_shader_pipeline);
+
+        graphics::reserve_graphics_memories();
     }
 
     gl_context::~gl_context()
     {
+        graphics::release_graphics_memories();
+
         glDeleteProgramPipelines(1, &m_shader_pipeline);
         wglad::release_context(m_hwnd, m_glrc, m_dc);
     }
@@ -25,11 +30,40 @@ namespace emt
     {
         glClearColor(r,g,b,a);
         glClear(GL_COLOR_BUFFER_BIT);
+        
+    }
+
+    void gl_context::set_viewports_t(uint count, const viewport *vps)
+    {
+        assert(count < max_viewports);
+        for(uint i =0; i < count; ++i)
+        {
+            //viewports
+            m_viewports[i * 4 + 0] = vps[i].x;
+            m_viewports[i * 4 + 1] = (float)client_height - (vps[i].height + vps[i].y);
+            m_viewports[i * 4 + 2] = vps[i].width;
+            m_viewports[i * 4 + 3] = vps[i].height;
+            //depths
+            m_depths[i * 2 + 0] = (double)vps[i].min_depth;
+            m_depths[i * 2 + 1] = (double)vps[i].max_depth;
+        }
+
+        glViewportArrayv(0, count, m_viewports);
+        glDepthRangeArrayv(0, count, m_depths);
+        
+    }
+
+    void gl_context::set_scissor_t(const rect &rc)
+    {
+        uint inverse_y = client_height - (rc.y + rc.height);
+        //glScissorIndexed(0, rc.x, inverse_y, rc.width, rc.height);
+        glScissor(rc.x, inverse_y, rc.width, rc.height);
+        glEnable(GL_SCISSOR_TEST);
     }
 
     void gl_context::set_input_layout_t(input_layout *layout)
     {
-        m_vao = ((gl_input_layout*)layout)->m_vao;
+        m_vao = ((gl_input_layout*)layout)->vao;
         glBindVertexArray(m_vao);
 
         if(m_asm.buffers[0]){
@@ -44,6 +78,7 @@ namespace emt
         if(m_ibo){
             glVertexArrayElementBuffer(m_vao, m_ibo);
         }
+        
 
     }
 
@@ -52,7 +87,7 @@ namespace emt
         m_asm.slot = slot;
         m_asm.count = count;
         for(uint i =0; i < count; ++i){
-            m_asm.buffers[i] = reinterpret_cast<gl_vertex_buffer*>(buffers[i])->m_buffer;
+            m_asm.buffers[i] = reinterpret_cast<gl_vertex_buffer*>(buffers[i])->handle;
             m_asm.offsets[i] = (int)offset[i];
             m_asm.strides[i] = (int)strides[i];
         }
@@ -71,28 +106,37 @@ namespace emt
 
     void gl_context::set_index_buffer_t(ibuffer *ibo, vertex_format format)
     {
-        m_ibo = ((gl_index_buffer*)ibo)->m_buffer;
+        m_ibo = ((gl_index_buffer*)ibo)->handle;
         if(m_vao){
             glVertexArrayElementBuffer(m_vao, m_ibo);
         }
     }
 
-    void gl_context::set_vertex_shader_t(const shader *shader)
+    void gl_context::set_vertex_shader_t(const vertex_shader *shader)
     {
-        if(shader->type != shader_type::vertex){
-            return;
+        uint vs = 0;
+        if(shader){
+            vs = ((gl_vertex_shader*)shader)->gpu_shader_id;
         }
-        uint vs = ((gl_shader*)shader)->program;
         glUseProgramStages(m_shader_pipeline, GL_VERTEX_SHADER_BIT, vs);
     }
 
-    void gl_context::set_pixel_shader_t(const shader *shader)
+    void gl_context::set_pixel_shader_t(const pixel_shader *shader)
     {
-        if(shader->type != shader_type::pixel){       
-            return;
+        uint ps = 0;
+        if(shader){
+            ps = ((gl_pixel_shader*)shader)->gpu_shader_id;
         }
-        uint ps = ((gl_shader*)shader)->program;
         glUseProgramStages(m_shader_pipeline, GL_FRAGMENT_SHADER_BIT, ps);
+    }
+
+    void gl_context::set_geometry_shader_t(const geometry_shader* shader)
+    {
+        uint gs = 0;
+        if(shader){
+            gs = ((gl_geometry_shader*)shader)->gpu_shader_id;
+        }
+        glUseProgramStages(m_shader_pipeline, GL_GEOMETRY_SHADER_BIT, gs);
     }
 
     void gl_context::draw_indexed_t(uint count, uint offset)

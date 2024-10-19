@@ -1,9 +1,11 @@
 #pragma once
 
 #include "core/defines.h"
+#include <stdint.h>
 
 typedef unsigned char   uint8, byte; 
 typedef unsigned int    uint, uint32;
+typedef uint64_t uint64;
 
 //============ OpenGL4 Foward Decalre =============
 struct	HWND__;
@@ -19,6 +21,14 @@ typedef short GLshort;
 typedef int GLint;
 typedef int GLsizei;
 typedef unsigned int GLenum;
+
+#if defined(_WIN64)
+typedef signed long long int GLintptr;
+typedef unsigned long long int GLuintptr;
+#else
+typedef signed long int GLintptr;
+typedef unsigned long int GLuintptr;
+#endif
 
 //========== DirectX11 Foward Decalre =============
 
@@ -41,6 +51,23 @@ namespace emt
         dx11 = 0x0, dx12, opengl, vulkan
     };
 
+    struct rect
+    {
+        uint x, y, width, height;
+    };
+    
+
+    struct viewport
+    {
+        float x;
+        float y;
+        float width;
+        float height;
+        float min_depth;
+        float max_depth;
+    };
+    
+
     struct vertex_buffer_create_info
     {
         void* p_data;
@@ -54,7 +81,7 @@ namespace emt
         uint size;
     };
 
-    enum class bufffer_type
+    enum class buffer_type
     {
         vertex, index, uniform, unkown
     };
@@ -66,7 +93,7 @@ namespace emt
     
     struct buffer_create_info
     {
-        bufffer_type type;
+        buffer_type type;
         uint size;
         void* p_data;
     };
@@ -110,6 +137,7 @@ namespace emt
         uint format_size;
         uint stride;
         uint offset;
+        bool instanced;
     };
     
     
@@ -123,6 +151,10 @@ namespace emt
     {
         vertex, pixel, geometry, hull, compute
     };
+
+    enum class topology : uint{
+        points, lines, triangles
+    };
     
     class scene;
     class context;
@@ -133,11 +165,17 @@ namespace emt
     struct input_layout;
 
     struct shader;
+    struct vertex_shader;
+    struct pixel_shader;
+    struct geometry_shader;
 
     //opengl struct
     struct gl_input_layout;
     struct gl_vertex_buffer;
     struct gl_index_buffer;
+
+    //meta
+    template<typename T> struct buffer_pool;
 }
 
 #include "vertex_type.h"

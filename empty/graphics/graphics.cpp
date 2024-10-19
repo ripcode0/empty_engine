@@ -5,18 +5,24 @@
 #include "graphics/opengl/gl_input_layout.h"
 #include "graphics/hash_table.h"
 #include "graphics/opengl/gl_shader.h"
-
+#include "graphics/buffer_pool.h"
+#include "core/config.h"
 namespace emt
 {
-    std::vector<std::shared_ptr<ibuffer>> graphics::m_buffers;
-
-    void graphics::init()
+    //buffer_pool<ibuffer>* graphics::m_buffer_cache{};
+    
+    void graphics::reserve_graphics_memories()
     {
-
+        if(!m_buffer_cache){
+            m_buffer_cache = emt_new buffer_pool<ibuffer>(max_buffer_count);
+            printf("[emt] create the buffer pool %zu size\n", sizeof(ibuffer*) * max_buffer_count);
+        }
+        
     }
 
-    void graphics::release()
+    void graphics::release_graphics_memories()
     {
+        safe_delete(m_buffer_cache);
         m_buffers.clear();
     }
 
@@ -24,25 +30,20 @@ namespace emt
         const buffer_create_info &info, ibuffer** pp_buffer
     )
     {
-        std::shared_ptr<ibuffer> buffer = nullptr;
-    
+        ibuffer* buffer = nullptr;
+
         switch (context::api)
         {
         case graphics_api::opengl:
             {
                 switch (info.type)
                 {
-                case bufffer_type::vertex:
-                    {
-                        buffer = std::make_shared<gl_vertex_buffer>(info);
-                        gl_vertex_buffer* vertex_buffer = static_cast<emt::gl_vertex_buffer*>(buffer.get());
-                        vertex_buffer->id = 10;
-                        
-                    }break;
-                case bufffer_type::index:
-                    {
-                        buffer = std::make_shared<gl_index_buffer>(info);
-                    }break;
+                case buffer_type::vertex: 
+                    buffer = m_buffer_cache->alloc<gl_vertex_buffer>(info);
+                    break;
+                case buffer_type::index:
+                    buffer = m_buffer_cache->alloc<gl_index_buffer>(info);
+                    break;
                 default:
                     break;
                 }
@@ -53,9 +54,48 @@ namespace emt
             break;
         }
 
-        *pp_buffer = buffer.get();
+        *pp_buffer = buffer;
+    }
 
-        m_buffers.emplace_back(buffer);
+    void graphics::create_vertex_buffer(const buffer_create_info &info, vertex_buffer **pp_buffer)
+    {
+        assert_msg(info.type == buffer_type::vertex, "the type dose not match, please check buffer_create_info");
+
+        vertex_buffer* p_buffer{};
+
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_buffer = (vertex_buffer*)m_buffer_cache->alloc<gl_vertex_buffer>(info);
+            break;
+        
+        default:
+            break;
+        }
+        *pp_buffer = p_buffer;
+    }
+
+    void graphics::create_index_buffer(const buffer_create_info &info, index_buffer **pp_buffer)
+    {
+        assert_msg(info.type == buffer_type::index, "the type dose not match, please check buffer_create_info");
+
+        index_buffer* p_buffer{};
+
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_buffer = (index_buffer*)m_buffer_cache->alloc<gl_index_buffer>(info);
+            break;
+        
+        default:
+            break;
+        }
+        *pp_buffer = p_buffer;
+    }
+
+    void graphics::release_buffer(ibuffer* buffer)
+    {
+        m_buffer_cache->release(buffer);
     }
 
     void graphics::create_input_layout(const input_layout_create_info &info, input_layout **pp_input_layout)
@@ -86,33 +126,103 @@ namespace emt
         m_input_layouts.insert(sets);
     }
 
-    void graphics::create_shader(const char *file, shader_type type, shader **pp_shader)
-    {
-        std::string shader_str{};
-
-        std::shared_ptr<shader> shader_ptr = nullptr;
-
+    std::string get_extension(){
         switch (context::api)
         {
-            case graphics_api::opengl:
-            {
-                shader_str += std::string(file) + ".glsl";
-                auto found = m_shaders.find(shader_str.c_str());
-                if(found != m_shaders.end()){
-                    *pp_shader = found->second.get();
-                    return;
-                }
-                shader_ptr = std::make_shared<gl_shader>(shader_str.c_str(), type);
-                break;
-            }
+        case graphics_api::opengl: return GLSL_EXTENTION;
+        case graphics_api::dx11: return HLSL_EXTENSION;
+        default: return ".none";
+        }
+    }
+
+    std::string get_shader_path(){
+        switch (context::api)
+        {
+        case graphics_api::opengl: return GLSL_PATH;
+        case graphics_api::dx11: return HLSL_PATH;
+        default: return ".none";
+        }
+    }
+
+    template<typename T>
+    typename std::enable_if<std::is_base_of<shader, T>::value, T*>::type
+    create_shader_from_cache(const char* filename, shader_type type, shader_cache& cache)
+    {
+        std::string shader_str(get_shader_path() + filename);
         
-            default:
-                break;
+        shader_str += get_extension();
+
+        std::hash<std::string> hasher;
+        uint id = (uint)hasher(shader_str);
+        std::size_t id_t = hasher(shader_str);
+
+
+        auto found = cache.find(id);
+
+        if(found != cache.end()){
+            T* shader = (T*)found->second.get();
+            if(shader->type != type){
+                return nullptr;
+                
+            }
+            return shader;
+        }
+        auto shader_ptr = std::make_shared<T>(shader_str.c_str());
+        shader_ptr->hash_id = id;
+
+        cache.insert(std::pair<uint, std::shared_ptr<shader>>(id, shader_ptr));
+        return shader_ptr.get();
+    }
+
+    void graphics::create_vertex_shader(const char* file, vertex_shader **pp_shader)
+    {
+        vertex_shader* p_shader = nullptr;
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_shader = create_shader_from_cache<gl_vertex_shader>(file, shader_type::vertex, m_shaders);    
+            break;
+        case graphics_api::dx11:
+            break;
+        default:
+            break;
         }
         
-        *pp_shader = shader_ptr.get();
-        m_shaders.insert(std::pair<std::string, std::shared_ptr<shader>>(shader_str,shader_ptr));
+        *pp_shader = p_shader;
+    }
+
+    void graphics::create_pixel_shader(const char *file, pixel_shader **pp_shader)
+    {
+        pixel_shader* p_shader = nullptr;
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_shader = create_shader_from_cache<gl_pixel_shader>(file, shader_type::pixel, m_shaders);    
+            break;
+        case graphics_api::dx11:
+            break;
+        default:
+            break;
+        }
         
+        *pp_shader = p_shader;
+    }
+
+    void graphics::create_geometry_shader(const char *file, geometry_shader **pp_shader)
+    {
+        geometry_shader* p_shader = nullptr;
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_shader = create_shader_from_cache<gl_geometry_shader>(file, shader_type::geometry, m_shaders);    
+            break;
+        case graphics_api::dx11:
+            break;
+        default:
+            break;
+        }
+        
+        *pp_shader = p_shader;
     }
 
 } // namespace emt

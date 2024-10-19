@@ -16,19 +16,28 @@ namespace emt
             return 0;
         }
     };
+    
     gl_input_layout::gl_input_layout(const input_layout_create_info &info)
     {
         static uint next_id = 0;
         id = next_id++;
 
-        glCreateVertexArrays(1, &m_vao);
+        glCreateVertexArrays(1, &vao);
         for(uint i =0; i < info.attr_size; ++i){
             vertex_attrib& attr = info.p_attrib[i];
-            glEnableVertexArrayAttrib(m_vao, i);
-            glVertexArrayAttribFormat(m_vao, attr.location, attr.format_size, get_gl_format(attr.format),
+            glEnableVertexArrayAttrib(vao, i);
+            glVertexArrayAttribFormat(vao, attr.location, attr.format_size, get_gl_format(attr.format),
              GL_FALSE, attr.offset);
-            glVertexArrayAttribBinding(m_vao, i, 0);
+            glVertexArrayAttribBinding(vao, 1, 0);
+            if(attr.instanced){
+                glVertexArrayBindingDivisor(vao, 1, 1);
+            }
         }
-    }    
-} // namespace emt
 
+        
+    }
+    gl_input_layout::~gl_input_layout()
+    {
+        glDeleteVertexArrays(1, &vao);
+    }
+} // namespace emt

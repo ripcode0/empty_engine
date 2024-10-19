@@ -7,11 +7,7 @@
 
 namespace emt
 {
-
-    gl_shader::gl_shader(const char *filename, shader_type type)
-    {
-        this->type = type;
-
+    uint compile_from_file(const char* filename, shader_type type){
         static auto get_gl_shader_type = [](shader_type type){
             switch (type)
             {
@@ -24,6 +20,7 @@ namespace emt
             return 0;
         };
 
+        uint gpu_shader_id = 0;
         auto gl_shader_type = get_gl_shader_type(type);
 
         if(gl_shader_type == GL_VERTEX_SHADER){
@@ -35,36 +32,63 @@ namespace emt
         }
 
         std::ifstream is(filename, std::ios::in);
-        if(!is) log_error("%s unable to open", filename);
+        if(!is) {
+            log_error("%s unable to open", filename);
+        }
 
-        std::stringstream code;
-        code << is.rdbuf();
+        std::string code((std::istreambuf_iterator<char>(is)),
+                          std::istreambuf_iterator<char>());
 
         is.close();
-        LPCSTR _str = code.str().c_str();
-        std::string code_str = code.str();
-        LPCSTR str = code_str.c_str();
 
-
-        program = glCreateShaderProgramv(gl_shader_type, 1, &str);
+        const char* code_str = code.c_str();
+        gpu_shader_id = glCreateShaderProgramv(gl_shader_type, 1, &code_str);
 
         GLint compiled{};
 
-        glGetProgramiv(program, GL_LINK_STATUS, &compiled);
+        glGetProgramiv(gpu_shader_id, GL_LINK_STATUS, &compiled);
 
         if(compiled == GL_FALSE)
         {
             char err[512]{};
-            glGetProgramInfoLog(program, 512, nullptr, err);
+            glGetProgramInfoLog(gpu_shader_id, 512, nullptr, err);
             char compiled_file[128]{};
             sprintf_s(compiled_file,128, "%s : %s", "compile error", filename);
             MessageBoxA(NULL, err, compiled_file, MB_OK);
-            glDeleteProgram(program);
+            glDeleteProgram(gpu_shader_id);
         }
-
+        return gpu_shader_id;
     }
 
+    gl_vertex_shader::gl_vertex_shader(const char *filename)
+    {
+        gpu_shader_id = compile_from_file(filename, this->type);
+    }
 
+    gl_vertex_shader::~gl_vertex_shader()
+    {
+        
+        if(gpu_shader_id) glDeleteProgram(gpu_shader_id);
+    }
+
+    gl_pixel_shader::gl_pixel_shader(const char *filename)
+    {
+        gpu_shader_id = compile_from_file(filename, this->type);
+    }
+
+    gl_pixel_shader::~gl_pixel_shader()
+    {
+        if(gpu_shader_id) glDeleteProgram(gpu_shader_id);
+    }
+
+    gl_geometry_shader::gl_geometry_shader(const char *filename)
+    {
+        gpu_shader_id = compile_from_file(filename, this->type);
+    }
+
+    gl_geometry_shader::~gl_geometry_shader()
+    {
+        if(gpu_shader_id) glDeleteProgram(gpu_shader_id);
+    }
 
 } // namespace emt
-

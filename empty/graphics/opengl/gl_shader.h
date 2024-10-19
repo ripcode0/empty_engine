@@ -4,14 +4,24 @@
 
 namespace emt
 {
-    struct gl_shader : shader
+    struct gl_vertex_shader : vertex_shader
     {
-        gl_shader(const char* filename, shader_type type);
-        
-        operator GLuint(){
-            return program;
-        }
-        GLuint program;
+        gl_vertex_shader(const char* filename);
+        virtual~gl_vertex_shader();
+        uint gpu_shader_id;
     };
     
+    struct gl_pixel_shader : pixel_shader
+    {
+        gl_pixel_shader(const char* filename);
+        virtual~gl_pixel_shader();
+        uint gpu_shader_id;
+    };
+
+    struct gl_geometry_shader : geometry_shader
+    {
+        gl_geometry_shader(const char* filename);
+        virtual~gl_geometry_shader();
+        uint gpu_shader_id;
+    };
 } // namespace emt

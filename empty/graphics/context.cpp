@@ -4,7 +4,7 @@
 namespace emt
 {
     context::context(uint cx, uint cy, HWND hwnd, graphics_api api, bool vsync)
-        : m_hwnd(hwnd)
+        : m_hwnd(hwnd), client_width(cx), client_height(cy)
     {
         this->api = api;
         if(!shared_context){
@@ -27,6 +27,16 @@ namespace emt
         
     }
 
+    void context::set_viewports(uint count, const viewport *vps)
+    {
+        shared_context->set_viewports_t(count, vps);
+    }
+
+    void context::set_scissor(const rect &rc)
+    {
+        shared_context->set_scissor_t(rc);
+    }
+
     void context::set_input_layout(input_layout *layout)
     {
         shared_context->set_input_layout_t(layout);
@@ -37,14 +47,19 @@ namespace emt
         shared_context->set_vertex_buffer_t(slot, count, buffers, offset, strides);
     }
 
-    void context::set_vertex_shader(const shader *shader)
+    void context::set_vertex_shader(const vertex_shader *shader)
     {
         shared_context->set_vertex_shader_t(shader);
     }
 
-    void context::set_pixel_shader(const shader *shader)
+    void context::set_pixel_shader(const pixel_shader *shader)
     {
         shared_context->set_pixel_shader_t(shader);
+    }
+
+    void context::set_geometry_shader(const geometry_shader *shader)
+    {
+        shared_context->set_geometry_shader_t(shader);
     }
 
     void context::set_index_buffer(ibuffer *buffer, vertex_format format)

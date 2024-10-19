@@ -14,6 +14,8 @@ set(lib_dir ${CMAKE_SOURCE_DIR}/lib
 set(inc_dir ${CMAKE_SOURCE_DIR}/empty
             ${CMAKE_SOURCE_DIR}/external/include)
 
+include(3rdparty.cmake)
+
 add_subdirectory(empty)
 
 add_subdirectory(sample)

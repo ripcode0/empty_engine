@@ -7,8 +7,9 @@ namespace emt
     struct gl_input_layout : input_layout
     {
         gl_input_layout(const input_layout_create_info& info);
+        virtual~gl_input_layout();
         
-        uint m_vao;
+        uint vao;
     };
     
 } // namespace emt

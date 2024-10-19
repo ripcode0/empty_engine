@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "window/window_config.h"
 #include "graphics/opengl/gl_context.h"
-#include "scene/scene.h"
+#include "system/scene.h"
 
 namespace emt
 {
@@ -33,7 +33,7 @@ namespace emt
         uint cx = rc.right - rc.left;
         uint cy = rc.bottom - rc.top;
 
-        m_context = new gl_context(cx, cy, m_hwnd, false);
+        m_context = emt_new gl_context(cx, cy, m_hwnd, false);
 
         ShowWindow(m_hwnd, SW_SHOW);
     }

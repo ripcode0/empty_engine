@@ -1,10 +1,12 @@
 #include "triangle_scene.h"
 #include "graphics/context.h"
 #include "graphics/graphics.h"
+#include "graphics/opengl/gl_config.h"
+#include "graphics/buffer.h"
 
 namespace emt
 {
-    void emt::triangle_scene::init_frame()
+    void emt::basic_scene::init_frame()
     {
         vertex_pc vertices[] = {
             {{-0.5f,-0.5f,0.f},{1.f, 0.f, 0.f}},
@@ -15,16 +17,17 @@ namespace emt
         buffer_create_info buffer_info{};
         buffer_info.p_data = vertices;
         buffer_info.size = _countof(vertices) * sizeof(vertex_pc);
-        buffer_info.type = bufffer_type::vertex;
-    
-        graphics::create_buffer(buffer_info, &m_vbo);
+        buffer_info.type = buffer_type::vertex;
+
+        //graphics::create_buffer(buffer_info, &m_vbo);
+        graphics::create_vertex_buffer(buffer_info, &m_vbo);
 
         uint indices[] = { 0,1,2};
         
         buffer_info = {};
         buffer_info.p_data = indices;
         buffer_info.size = sizeof(uint) * _countof(indices);
-        buffer_info.type = bufffer_type::index;
+        buffer_info.type = buffer_type::index;
 
         graphics::create_buffer(buffer_info, &m_ibo);
 
@@ -39,12 +42,17 @@ namespace emt
 
         graphics::create_input_layout(input_info, &m_input_layout);
      
-
-        graphics::create_shader("../data/shaders/glsl/test_vs", shader_type::vertex, &m_vs);
-        graphics::create_shader("../data/shaders/glsl/test_ps", shader_type::pixel, &m_ps);
-        graphics::create_shader("../data/shaders/glsl/bind_ps", shader_type::pixel, &m_test);
+        
+        //graphics::create_shader("data/shaders/glsl/test_vs", shader_type::vertex, &m_vs);
+        graphics::create_vertex_shader("instance_vs", &m_vs);
+        graphics::create_pixel_shader("test_ps", &m_ps);
+        graphics::create_geometry_shader("test_gs", &m_gs);
+        // graphics::create_shader("data/shaders/glsl/test_ps", shader_type::pixel, &m_ps);
+        // graphics::create_shader("data/shaders/glsl/test_gs", shader_type::geometry, &m_gs);
+        
 
         context::set_vertex_shader(m_vs);
+
         context::set_pixel_shader(m_ps);
 
         context::set_input_layout(m_input_layout);
@@ -52,32 +60,56 @@ namespace emt
         
         uint offset = 0;
         uint stride = sizeof(vertex_pc);
-        vertex_buffer* vbo = (vertex_buffer*)m_vbo;
-        context::set_vertex_buffer(0, 1, &vbo, &offset, &stride);
+        //vertex_buffer* vbo = (vertex_buffer*)m_vbo;
+        context::set_vertex_buffer(0, 1, &m_vbo, &offset, &stride);
         context::set_index_buffer(m_ibo, vertex_format::vertex_format_byte);
+
         
+        //graphics::create_shader("test", shader_type::vertex, &vbs);
+        //graphics::create_vertex_shader("data/shaders/glsl/test_vs", &vbs);
+
+        uint aaaa = 0;
+        glCreateQueries(GL_PRIMITIVES_GENERATED, 1, &m_qr);
     }
-    void triangle_scene::update_frame(float dt)
+
+    
+
+    void basic_scene::update_frame(float dt)
     {
+        glDepthRangef(0.2f, 0.3f);
+        float range[2];
+        glGetFloatv(GL_DEPTH_RANGE, range);
+        float a[4];
+        glGetFloatv(GL_VIEWPORT, a);
+
+        
+
     }
-    void triangle_scene::render_frame()
+    void basic_scene::render_frame()
     {
-        context::clear(0.3f,0.4f,0.5f,1.f);
+        context::clear(0.2f,0.2f,0.2f,1.f);
 
-        // vertex_buffer* vertex_buffers[] = {(vertex_buffer*)m_vbo};
-        // uint offset = 0;
-        // uint stride = sizeof(vertex_pc);
+        context::set_input_layout(m_input_layout);
+
+        uint stride = sizeof(vertex_pc);
+        uint offset = 0;
+        context::set_vertex_buffer(0, 1, &m_vbo, &offset, &stride);
+        context::set_index_buffer(m_ibo, vertex_format::vertex_format_uint);
+        context::set_vertex_shader(m_vs);
+        context::set_pixel_shader(m_ps);
+        context::set_geometry_shader(m_gs);
         
-        // graphics_context::set_vertex_buffer(0, 1, vertex_buffers, &offset, &stride);
-        context::set_pixel_shader(m_test);
 
-        context::draw_indexed(3,0);
+        context::draw_indexed(3, 0);
 
-        
+        context::set_geometry_shader(nullptr);
+        context::draw_indexed(3, 0);
 
         context::swap_buffers();
     }
-    void triangle_scene::release_frame()
+    void basic_scene::release_frame()
     {
+        graphics::release_buffer(m_vbo);
+        
     }
 } // namespace emt

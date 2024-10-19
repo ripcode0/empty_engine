@@ -1,5 +1,7 @@
+#empty
 file(GLOB_RECURSE srcs *.h *.cpp)
 
+#message("srcs : ${srcs}")
 
 add_executable(sample ${srcs})
 
@@ -14,5 +16,6 @@ set_target_properties(sample PROPERTIES
     PDB_OUTPUT_DIRECTORY ${bin_dir}
     PDB_OUTPUT_DIRECTORY_DEBUG ${bin_dir}
     PDB_OUTPUT_DIRECTORY_RELEASE ${bin_dir}
+    VS_DEBUGGER_WORKING_DIRECTORY ${bin_dir} #working directory for VS
 )
 
