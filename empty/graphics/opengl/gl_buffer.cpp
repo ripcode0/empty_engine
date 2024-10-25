@@ -33,6 +33,14 @@ namespace emt
         glDeleteBuffers(1, &handle);
     }
 
+    gl_uniform_buffer::gl_uniform_buffer(const buffer_create_info &info)
+    {
+        assert(info.type == buffer_type::uniform);
+        glCreateBuffers(1, &handle);
+        GLbitfield flag = GL_DYNAMIC_STORAGE_BIT;
+        glNamedBufferStorage(handle, info.size, info.p_data, flag);
+    }
+
     gl_uniform_buffer::~gl_uniform_buffer()
     {
         glDeleteBuffers(1, &handle);

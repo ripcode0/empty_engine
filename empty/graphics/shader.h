@@ -24,7 +24,9 @@ namespace emt
         geometry_shader() : shader(shader_type::geometry) {}        
     };
     
-    
+    struct compute_shader : shader { 
+        compute_shader() : shader(shader_type::compute) {}        
+    };
     
     
     

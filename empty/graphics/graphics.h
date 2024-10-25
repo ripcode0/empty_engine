@@ -27,6 +27,9 @@ namespace emt
         static void create_index_buffer(
             const buffer_create_info& info, index_buffer** pp_buffer);
 
+        static void create_uniform_buffer(
+            const buffer_create_info& info, uniform_buffer** pp_buffer);
+
         static void release_buffer(ibuffer* buffer);
 
         static void create_input_layout(

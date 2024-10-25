@@ -9,6 +9,7 @@ target_include_directories(sample PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${inc_dir})
 target_link_directories(sample PUBLIC ${lib_dir})
 target_link_libraries(sample PUBLIC empty)
 
+
 set_target_properties(sample PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${bin_dir}
     RUNTIME_OUTPUT_DIRECTORY_DEBUG ${bin_dir}

@@ -28,9 +28,11 @@ namespace emt
             glEnableVertexArrayAttrib(vao, i);
             glVertexArrayAttribFormat(vao, attr.location, attr.format_size, get_gl_format(attr.format),
              GL_FALSE, attr.offset);
-            glVertexArrayAttribBinding(vao, 1, 0);
+             uint binding_index = 0;
+             if(attr.instanced) binding_index = 1;
+            glVertexArrayAttribBinding(vao, i, binding_index);
             if(attr.instanced){
-                glVertexArrayBindingDivisor(vao, 1, 1);
+                glVertexArrayBindingDivisor(vao, 1, binding_index);
             }
         }
 

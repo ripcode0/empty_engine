@@ -104,7 +104,7 @@ namespace emt
 
     
 
-    void gl_context::set_index_buffer_t(ibuffer *ibo, vertex_format format)
+    void gl_context::set_index_buffer_t(ibuffer *ibo, format format)
     {
         m_ibo = ((gl_index_buffer*)ibo)->handle;
         if(m_vao){
@@ -149,7 +149,19 @@ namespace emt
         
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }
-    
+
+    void gl_context::set_uniform_buffer_t(uint index, uniform_buffer *buffer)
+    {
+        
+        if(buffer){
+            uint ubo = ((gl_uniform_buffer*)buffer)->handle;
+
+            glBindBufferBase(GL_UNIFORM_BUFFER, index, ubo);
+        }else{
+            glBindBufferBase(GL_UNIFORM_BUFFER, index, NULL);
+        }
+    }
+
     void gl_context::swap_buffers_t()
     {
         ::SwapBuffers(m_dc);

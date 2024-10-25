@@ -24,4 +24,12 @@ namespace emt
         virtual~gl_geometry_shader();
         uint gpu_shader_id;
     };
+
+    struct gl_compute_shader : compute_shader
+    {
+        gl_compute_shader(const char* filename);
+        virtual~gl_compute_shader();
+        uint gpu_shader_id;
+    };
+    
 } // namespace emt

@@ -115,10 +115,12 @@ namespace emt
         rgb8_uint,
         rgba8_uint,
         rgba8,
-        r16,
-        rgb16,
-        rgba16,
+        r16_uint,       //unsigned short
+        rg16_uint,
+        rgb16_uint,
+        rgba16_uint,
         r32,
+        r32_uint,
         rgb32, 
         rgba32
     };
@@ -162,6 +164,7 @@ namespace emt
     struct ibuffer;
     struct vertex_buffer;
     struct index_buffer;
+    struct uniform_buffer;
     struct input_layout;
 
     struct shader;
@@ -173,6 +176,11 @@ namespace emt
     struct gl_input_layout;
     struct gl_vertex_buffer;
     struct gl_index_buffer;
+
+    //system
+    struct camera;
+    
+    
 
     //meta
     template<typename T> struct buffer_pool;

@@ -18,6 +18,37 @@ namespace emt
         void release_frame();
         /* data */
 
+        uint cmd_buffer{};
+
+        struct draw_command
+        {
+            GLenum mode;
+            GLint first;
+            GLsizei count;
+        };
+        
+        uint index_buffer{};
+        uint vbo{};
+        uint vao{};
+        
+        vertex_shader* m_vs;
+        pixel_shader* m_ps;
+        uint m_pipeline;
+
+        uint64 vbo_addr;
+        uint64 ibo_addr;
+
+        struct
+        {
+            uint id;
+            uint64 addr;
+        }obj[3];
+
+
+        uint state;
+        uint cmdlist;
+        
+        
         
     };
     

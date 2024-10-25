@@ -25,11 +25,13 @@ namespace emt
             const uint* offset,
             const uint* strides) override;
 
-        virtual void set_index_buffer_t(ibuffer* buffer, vertex_format format) override;
+        void set_index_buffer_t(ibuffer* buffer, format format) override;
         void set_vertex_shader_t(const vertex_shader* shader) override;
         void set_pixel_shader_t(const pixel_shader* shader) override;
         void set_geometry_shader_t(const geometry_shader* shader) override;
         void draw_indexed_t(uint count, uint offset) override;
+
+        void set_uniform_buffer_t(uint index, uniform_buffer* buffer) override;
         void swap_buffers_t() override;
 
         HGLRC m_glrc{};
@@ -60,5 +62,11 @@ namespace emt
 
         
     }; 
+
+    struct gl_command_list
+    {
+        /* data */
+    };
+    
 } // namespace emt
 

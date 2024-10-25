@@ -1,14 +1,14 @@
 #pragma once
 
-#include "math/vec3.h"
+#include "math/linermath.h"
 
 namespace emt
 {
     /// @brief point, color, st
     struct vertex_pc
     {
-        vec3 pos;
-        vec3 color;
+        vec3f pos;
+        vec3f color;
     };
     
 } // namespace emt

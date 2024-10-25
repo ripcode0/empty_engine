@@ -93,6 +93,22 @@ namespace emt
         *pp_buffer = p_buffer;
     }
 
+    void graphics::create_uniform_buffer(const buffer_create_info &info, uniform_buffer **pp_buffer)
+    {
+        uniform_buffer* p_buffer{};
+
+        switch (context::api)
+        {
+        case graphics_api::opengl:
+            p_buffer = (uniform_buffer*)m_buffer_cache->alloc<gl_uniform_buffer>(info);
+            break;
+        
+        default:
+            break;
+        }
+        *pp_buffer = p_buffer;
+    }
+
     void graphics::release_buffer(ibuffer* buffer)
     {
         m_buffer_cache->release(buffer);

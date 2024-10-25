@@ -62,7 +62,7 @@ namespace emt
         shared_context->set_geometry_shader_t(shader);
     }
 
-    void context::set_index_buffer(ibuffer *buffer, vertex_format format)
+    void context::set_index_buffer(ibuffer *buffer, format format)
     {
         shared_context->set_index_buffer_t(buffer, format);
     }
@@ -70,6 +70,12 @@ namespace emt
     void context::draw_indexed(uint count, uint offset)
     {
         shared_context->draw_indexed_t(count, offset);
+    }
+
+    void context::set_uniform_buffer(uint index, uniform_buffer* buffer)
+    {
+        
+        shared_context->set_uniform_buffer_t(index, buffer);
     }
 
     void context::swap_buffers()

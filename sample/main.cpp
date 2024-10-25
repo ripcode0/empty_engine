@@ -10,26 +10,7 @@ using namespace emt;
 #include "core/config.h"
 #include "scenes/opengl/dsa_scene.h"
 
-struct data
-{
-    int a;
-};
 
-struct subdata : data
-{
-    uint aa;
-};
-
-struct subsbudata : subdata
-{
-    virtual~subsbudata(){}
-    uint aaw;
-};
-
-
-static void a_test(data* data){
-    uint g = 0;
-}
 
 int main(int args, char* argv[])
 {

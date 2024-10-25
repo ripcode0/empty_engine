@@ -3,6 +3,7 @@
 #include "window/window_config.h"
 #include "graphics/opengl/gl_context.h"
 #include "system/scene.h"
+#include "system/input.h"
 
 namespace emt
 {
@@ -45,6 +46,8 @@ namespace emt
     int window::exec(scene* scene)
     {
         if(scene) scene->init_frame();
+        input::init_frame(m_hwnd);
+
         MSG msg{};
 
         while (msg.message != WM_QUIT)
@@ -59,6 +62,8 @@ namespace emt
             }
 
             if(scene && m_context){
+                input::update_frame();
+                
                 scene->update_frame(0.f);
                 scene->render_frame();
             }

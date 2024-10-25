@@ -2,7 +2,11 @@
 
 out vec4 pixel_color;
 
+in struct {
+    vec3 color;
+}ps_in;
+
 void main()
 {
-    pixel_color = vec4(0.6,0.6,0.5,1);
+    pixel_color = vec4(ps_in.color,1);
 }

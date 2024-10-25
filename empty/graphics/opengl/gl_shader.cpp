@@ -91,4 +91,14 @@ namespace emt
         if(gpu_shader_id) glDeleteProgram(gpu_shader_id);
     }
 
+    gl_compute_shader::gl_compute_shader(const char *filename)
+    {
+        gpu_shader_id = compile_from_file(filename, this->type);
+    }
+
+    gl_compute_shader::~gl_compute_shader()
+    {
+        if(gpu_shader_id) glDeleteProgram(gpu_shader_id);
+    }
+
 } // namespace emt

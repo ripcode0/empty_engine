@@ -25,9 +25,12 @@ namespace emt{
         static void set_vertex_shader(const vertex_shader* shader);
         static void set_pixel_shader(const pixel_shader* shader);
         static void set_geometry_shader(const geometry_shader* shader);
-        static void set_index_buffer(ibuffer* buffer, vertex_format format);
+        static void set_index_buffer(ibuffer* buffer, format format);
         
         static void draw_indexed(uint count, uint offset);
+
+        //uniform
+        static void set_uniform_buffer(uint index, uniform_buffer* buffer);
         
         static void swap_buffers();
 
@@ -49,12 +52,14 @@ namespace emt{
             vertex_buffer* const* buffers,
             const uint* offset,
             const uint* strides) = 0;
-        virtual void set_index_buffer_t(ibuffer* buffer, vertex_format format) = 0;
+        virtual void set_index_buffer_t(ibuffer* buffer, format format) = 0;
 
         virtual void set_vertex_shader_t(const vertex_shader* shader) = 0;
         virtual void set_pixel_shader_t(const pixel_shader* shader) = 0;
         virtual void set_geometry_shader_t(const geometry_shader* shader) = 0;
         virtual void draw_indexed_t(uint count, uint offset) = 0;
+        virtual void set_uniform_buffer_t(uint index, uniform_buffer* buffer) = 0;
+
         virtual void swap_buffers_t() = 0;
 
         inline static context* shared_context{};
