@@ -1,0 +1,23 @@
+#pragma once
+
+#include <cstdlib>
+#include <new>
+
+void* operator new[](size_t size, const char* pName, int flags, unsigned debugFlags, const char* file, int line)
+{
+    return malloc(size);
+}
+
+void* operator new[](size_t size, size_t alignment, size_t alignmentOffset, const char* pName, int flags, unsigned debugFlags, const char* file, int line)
+{
+    void* original = malloc(size + alignment - 1 + sizeof(void*));
+    if (!original) {
+        throw std::bad_alloc(); 
+    }
+    uintptr_t alignedAddress = (reinterpret_cast<uintptr_t>(original) + sizeof(void*) + alignment - 1) & ~(alignment - 1);
+    void* alignedPtr = reinterpret_cast<void*>(alignedAddress);
+
+    *(reinterpret_cast<void**>(alignedPtr) - 1) = original;
+
+    return alignedPtr;
+}
