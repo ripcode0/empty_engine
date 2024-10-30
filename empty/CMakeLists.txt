@@ -23,7 +23,7 @@ add_custom_command(
     TARGET empty
     POST_BUILD COMMAND ${CMAKE_COMMAND}
     -E create_symlink ${src_data_dir} ${dst_data_dir}
-    DEPENDS ${dst_data_dir}
+    #DEPENDS ${dst_data_dir}
     COMMENT "create a symbolic link ${dst_data_dir}"
 )
 

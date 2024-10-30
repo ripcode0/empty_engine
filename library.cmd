@@ -10,8 +10,13 @@ if exist %download_dir%/CMakeLists.txt (
     git clone https://github.com/ripcode0/wglad.git %download_dir%
 )
 
+set config=Debug
+if "%1"=="release" (
+    set config=Release
+)
+
 cmake -S %download_dir% -B %download_dir%/build
-cmake --build %download_dir%/build --config Debug
-cmake --install %download_dir%/build --prefix %install_dir%
+cmake --build %download_dir%/build --config %config%
+cmake --install %download_dir%/build --config %config% --prefix %install_dir%
 
 rmdir /S /Q download
