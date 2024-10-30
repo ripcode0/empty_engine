@@ -101,7 +101,7 @@ namespace emt
         float f = std::sinf((float)frame * 0.03f);
         vec3f color(1.f - f, 1.f-f, 0);
         
-        glNamedBufferSubData(3, 0, sizeof(vec3f), &color);
+        m_ubo->sub_data(0, sizeof(vec3f), &color);
 
         context::draw_indexed(3, 0);
 

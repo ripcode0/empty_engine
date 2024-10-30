@@ -13,6 +13,20 @@ namespace emt
 
         internal_update();
     }
+    void camera::look_at(const vec3f &eye, const vec3f &at)
+    {
+        pos = eye;
+        forward = (pos - eye).normalized();
+        right = vec3f::cross(vec3f(0.f, 1.f, 0.f), forward).normalized();
+        up = vec3f::cross(forward, right).normalized();
+
+        internal_update();
+    }
+    void camera::update_frame(float dt)
+    {
+        //TODO :: controller of input function
+
+    }
     void camera::internal_update()
     {
         local = {
@@ -28,8 +42,8 @@ namespace emt
 
         view = {
             right.x , right.y, right.z, x,
-            right.x , right.y, right.z, x,
-            right.x , right.y, right.z, x,
+            right.x , right.y, right.z, y,
+            right.x , right.y, right.z, z,
             0.f, 0.f, 0.f, 1.f
         };
     }

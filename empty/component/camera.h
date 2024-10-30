@@ -7,7 +7,10 @@ namespace emt
     struct camera
     {
         camera(float fov, float aspect, float znear, float zfar);
+
+        void look_at(const vec3f& eye, const vec3f& at);
         
+        void update_frame(float dt);
 
         void internal_update();
 

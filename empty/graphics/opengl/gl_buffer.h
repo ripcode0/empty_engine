@@ -23,7 +23,7 @@ namespace emt
     {
         explicit gl_uniform_buffer(const buffer_create_info& info);
         virtual~gl_uniform_buffer();
-
+        void sub_data(uint offset, uint size, const void* p_data) override;
         uint handle;
     };
 } // namespace emt

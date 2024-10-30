@@ -24,5 +24,6 @@ namespace emt
 
     struct uniform_buffer : ibuffer{
         uniform_buffer() : ibuffer(buffer_type::uniform){}
+        virtual void sub_data(uint offset, uint size, const void* p_data) = 0;
     };
 } // namespace emt

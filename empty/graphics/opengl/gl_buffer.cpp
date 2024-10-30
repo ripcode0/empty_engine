@@ -46,4 +46,10 @@ namespace emt
         glDeleteBuffers(1, &handle);
     }
 
+    void gl_uniform_buffer::sub_data(uint offset, uint size, const void* p_data)
+    {
+        if(!handle) return;
+        glNamedBufferSubDataEXT(handle, offset, size, p_data);
+    }
+
 } // namespace emt
