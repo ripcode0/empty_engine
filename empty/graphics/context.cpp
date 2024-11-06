@@ -27,9 +27,14 @@ namespace emt
         
     }
 
-    void context::set_viewports(uint count, const viewport *vps)
+    void context::set_viewport(const viewport* vp)
     {
-        shared_context->set_viewports_t(count, vps);
+        shared_context->set_viewport_t(vp);
+    }
+
+    void context::get_viewport(viewport *vp)
+    {
+        shared_context->get_viewport_t(vp);
     }
 
     void context::set_scissor(const rect &rc)

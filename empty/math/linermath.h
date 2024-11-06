@@ -850,7 +850,7 @@ inline mat4x4 mat4x4::look_at(const vec3f& pos, const vec3f& center, const vec3f
 
 	mat4x4 m = {
 		r.x,r.y,r.z,x,
-		u.x,u.y,u.y,y,
+		u.x,u.y,u.z,y,
 		f.x,f.y,f.z,z,
 		0,0,0,1
 	};

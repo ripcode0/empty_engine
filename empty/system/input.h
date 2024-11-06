@@ -19,6 +19,8 @@ namespace emt
         inline static float delta[2]{};
 
         inline static HWND current_hwnd{};
+
+        static bool is_key_pressed(int key);
     };
     
     

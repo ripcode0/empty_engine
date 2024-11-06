@@ -1,4 +1,5 @@
 #include "camera.h"
+#include "system/input.h"
 
 namespace emt
 {
@@ -12,11 +13,13 @@ namespace emt
         right   = {1.0f, 0.0f, 0.0f};
 
         internal_update();
+
+        m_ctrl = &camera::fps_movement;
     }
     void camera::look_at(const vec3f &eye, const vec3f &at)
     {
         pos = eye;
-        forward = (pos - eye).normalized();
+        forward = (at - pos).normalized();
         right = vec3f::cross(vec3f(0.f, 1.f, 0.f), forward).normalized();
         up = vec3f::cross(forward, right).normalized();
 
@@ -25,7 +28,11 @@ namespace emt
     void camera::update_frame(float dt)
     {
         //TODO :: controller of input function
+        if(m_ctrl){
+            m_ctrl(this, dt);
+        }
 
+        internal_update();
     }
     void camera::internal_update()
     {
@@ -41,10 +48,36 @@ namespace emt
         float z = -vec3f::dot(forward, pos);
 
         view = {
-            right.x , right.y, right.z, x,
-            right.x , right.y, right.z, y,
-            right.x , right.y, right.z, z,
+            right.x   ,right.y,     right.z,    x,
+            up.x      ,up.y,        up.z,       y,
+            forward.x ,forward.y,   forward.z,  z,
             0.f, 0.f, 0.f, 1.f
         };
+    }
+
+    void camera::fps_movement(camera *camera, float dt)
+    {
+        float speed = 3.33f;
+        float sensor = 0.1f;
+        camera->yaw += input::delta[0] * sensor;
+        camera->pitch -= input::delta[1] * sensor;
+
+        camera->forward.x = cos(camera->yaw) * cos(camera->pitch);
+        camera->forward.y = sin(camera->pitch);
+        camera->forward.z = sin(camera->yaw) * cos(camera->pitch);
+        camera->forward = camera->forward.normalized();
+
+
+
+        if(input::is_key_pressed('W')){
+            camera->pos += camera->forward * speed * dt;
+        }
+        if(input::is_key_pressed('S')){
+            camera->pos -= camera->forward * speed * dt;
+        }
+
+        
+        
+        
     }
 } // namespace emt

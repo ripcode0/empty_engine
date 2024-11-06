@@ -24,7 +24,7 @@ namespace emt
 
         if(!first_updated){
             memcpy(&last_pos, current_pos, sizeof(float) * 2);
-            first_updated;
+            first_updated = true;
         }
 
         if(last_pos[0] != current_pos[0] || last_pos[1] != current_pos[1]){
@@ -36,8 +36,13 @@ namespace emt
             delta[1] = 0.f;
         }
 
-    memcpy(&last_pos, &current_pos, sizeof(float) * 2);
+        memcpy(&last_pos, &current_pos, sizeof(float) * 2);
 
+    }
+
+    bool input::is_key_pressed(int key)
+    {
+        return (::GetAsyncKeyState(key) & 0x8000);
     }
 
 } // namespace emt

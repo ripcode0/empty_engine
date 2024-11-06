@@ -14,7 +14,8 @@ namespace emt
     private:
         void clear_t(float r, float g, float b, float a) override;
 
-        void set_viewports_t(uint count, const viewport* vps) override;
+        void set_viewport_t(const viewport* vps) override;
+        void get_viewport_t(viewport* vp) override;
         void set_scissor_t(const rect& rc) override;
         void set_input_layout_t(input_layout* layout) override;
 

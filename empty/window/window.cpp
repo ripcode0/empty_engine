@@ -4,6 +4,7 @@
 #include "graphics/opengl/gl_context.h"
 #include "system/scene.h"
 #include "system/input.h"
+#include "system/timer.h"
 
 namespace emt
 {
@@ -41,12 +42,14 @@ namespace emt
 
     window::~window()
     {
+        
     }
 
     int window::exec(scene* scene)
     {
         if(scene) scene->init_frame();
         input::init_frame(m_hwnd);
+        fps_timer timer;
 
         MSG msg{};
 
@@ -62,17 +65,22 @@ namespace emt
             }
 
             if(scene && m_context){
+                timer.begin_frame();
+
                 input::update_frame();
                 
-                scene->update_frame(0.f);
+                scene->update_frame(timer.delta);
+                
                 scene->render_frame();
+
+                timer.end_frame();
             }
             
             
         }
 
         if(scene) scene->release_frame();
-        if(m_context) delete m_context;
+        safe_delete(m_context);
         
         return (int)msg.wParam;
     }

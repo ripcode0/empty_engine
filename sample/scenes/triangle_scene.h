@@ -30,15 +30,17 @@ namespace emt
         uint m_qr;
 
         uniform_buffer* m_ubo{};
-
+        struct 
+        {
+            mat4x4 proj;
+            mat4x4 view;
+        }matrices;
+        
         camera* m_camera{};
 
-        struct graphics_commad_list
-        {
-            void set_vertex_buffer(uint id){
 
-            }
-        };
+
+       
 
     };    
 } // namespace emt

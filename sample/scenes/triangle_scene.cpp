@@ -10,8 +10,14 @@ namespace emt
     void emt::basic_scene::init_frame()
     {
         viewport vp{};
-        
-        //m_camera = new camera()        
+
+        context::get_viewport(&vp);
+
+        float ratio = vp.width / vp.height;
+        m_camera = new emt::camera(90.f, ratio, 0.01f, 1000.f);    
+        m_camera->look_at({0,1,-5}, {0,0,0});    
+        //m_camera->pos = {0.f, 0.f, -2.f};
+        //m_camera->internal_update();
 
         vertex_pc vertices[] = {
             {{-0.5f,-0.5f,0.f},{1.f, 0.f, 0.f}},
@@ -63,22 +69,26 @@ namespace emt
 
         context::clear_depth(0xffffff);
 
+        matrices.proj = m_camera->projection;
+        matrices.view = m_camera->view;
+        
         buffer_info = {};
-        buffer_info.size = sizeof(vec3f);
-        vec3f color(1.f,0.5f, 0.3f);
-        buffer_info.p_data = &color;
+        buffer_info.size = sizeof(mat4x4) * 2;
+        buffer_info.p_data = &matrices;
         buffer_info.type = buffer_type::uniform;
 
         graphics::create_uniform_buffer(buffer_info, &m_ubo);
 
     }
 
-    
-
     void basic_scene::update_frame(float dt)
     {
+  
+        m_camera->update_frame(dt);
 
-
+        mat4x4 mat[2] = {m_camera->projection, m_camera->view};
+        m_ubo->sub_data(0, sizeof(mat4x4) * 2, mat);
+        
 
     }
     void basic_scene::render_frame()
@@ -96,12 +106,7 @@ namespace emt
         context::set_geometry_shader(m_gs);
         context::set_uniform_buffer(0, m_ubo);
         
-        static uint64 frame = 0;
-        frame++;
-        float f = std::sinf((float)frame * 0.03f);
-        vec3f color(1.f - f, 1.f-f, 0);
-        
-        m_ubo->sub_data(0, sizeof(vec3f), &color);
+ 
 
         context::draw_indexed(3, 0);
 

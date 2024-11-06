@@ -14,7 +14,7 @@ namespace emt
         wglad::create_context_from_hwnd(hwnd, &m_glrc, &m_dc);
         glCreateProgramPipelines(1, &m_shader_pipeline);
         glBindProgramPipeline(m_shader_pipeline);
-
+        wglSwapIntervalEXT(vsync ? 1 : 0);
         graphics::reserve_graphics_memories();
     }
 
@@ -33,24 +33,27 @@ namespace emt
         
     }
 
-    void gl_context::set_viewports_t(uint count, const viewport *vps)
+    void gl_context::set_viewport_t(const viewport *vp)
     {
-        assert(count < max_viewports);
-        for(uint i =0; i < count; ++i)
-        {
-            //viewports
-            m_viewports[i * 4 + 0] = vps[i].x;
-            m_viewports[i * 4 + 1] = (float)client_height - (vps[i].height + vps[i].y);
-            m_viewports[i * 4 + 2] = vps[i].width;
-            m_viewports[i * 4 + 3] = vps[i].height;
-            //depths
-            m_depths[i * 2 + 0] = (double)vps[i].min_depth;
-            m_depths[i * 2 + 1] = (double)vps[i].max_depth;
-        }
-
-        glViewportArrayv(0, count, m_viewports);
-        glDepthRangeArrayv(0, count, m_depths);
+        float x = vp->x;
+        float y = client_height - (vp->height + vp->y);
+        float w = vp->width;
+        float h = vp->height;
         
+        glViewport(x, y, w, h);
+        glDepthRange(vp->min_depth, vp->max_depth);
+    }
+
+    void gl_context::get_viewport_t(viewport *vp)
+    {
+        float* ptr = (float*)vp;
+        GLfloat v[4];
+        glGetFloatv(GL_VIEWPORT, v);
+        GLfloat dr[2];
+        glGetFloatv(GL_DEPTH_RANGE, dr);
+        memcpy(ptr, v, sizeof(float) * 4);
+        ptr += 4;
+        memcpy(ptr, dr, sizeof(float) * 2);
     }
 
     void gl_context::set_scissor_t(const rect &rc)

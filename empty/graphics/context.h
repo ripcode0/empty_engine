@@ -13,7 +13,9 @@ namespace emt{
         static void clear(float r, float g, float b, float a);
         static void clear_depth(float value);
 
-        static void set_viewports(uint count, const viewport* vps);
+        static void set_viewport(const viewport* vps);
+        static void get_viewport(viewport* vp);
+
         static void set_scissor(const rect& rc);
         static void set_input_layout(input_layout* layout);
         static void set_vertex_buffer(
@@ -43,7 +45,8 @@ namespace emt{
         inline static graphics_api api = graphics_api::opengl;  
     private:
         virtual void clear_t(float r, float g, float b, float a) = 0;
-        virtual void set_viewports_t(uint count, const viewport* vps) = 0;
+        virtual void set_viewport_t(const viewport* vp) = 0;
+        virtual void get_viewport_t(viewport* vp) = 0;
         virtual void set_scissor_t(const rect& rc) = 0;
         virtual void set_input_layout_t(input_layout* layout) = 0;
         virtual void set_vertex_buffer_t(

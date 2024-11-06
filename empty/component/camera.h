@@ -4,6 +4,7 @@
 
 namespace emt
 {
+    typedef void (*pfn_camera_controller)(camera*, float);
     struct camera
     {
         camera(float fov, float aspect, float znear, float zfar);
@@ -25,11 +26,16 @@ namespace emt
 
         vec3f pos;
         vec3f rot;
-
+        float yaw {};
+        float pitch{};
         
         vec3f forward;
         vec3f up;
         vec3f right;
+
+        pfn_camera_controller m_ctrl{};
+
+        inline static void fps_movement(camera* camera, float dt);
     };
     
 } // namespace emt
