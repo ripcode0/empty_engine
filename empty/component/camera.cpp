@@ -6,7 +6,7 @@ namespace emt
     camera::camera(float fov, float aspect, float znear, float zfar)
         : fovy(fov), aspect_ratio(aspect), znear(znear), zfar(zfar)
     {
-        projection = mat4x4::perspective_lh(fovy, aspect_ratio, znear, zfar);
+        proj = mat4x4::perspective_lh(fovy, aspect_ratio, znear, zfar);
 
         forward = {0.0f, 0.0f, 1.0f};    
         up      = {0.0f, 1.0f, 0.0f};

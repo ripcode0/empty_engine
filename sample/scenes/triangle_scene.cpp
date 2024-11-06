@@ -69,7 +69,7 @@ namespace emt
 
         context::clear_depth(0xffffff);
 
-        matrices.proj = m_camera->projection;
+        matrices.proj = m_camera->proj;
         matrices.view = m_camera->view;
         
         buffer_info = {};
@@ -86,9 +86,9 @@ namespace emt
   
         m_camera->update_frame(dt);
 
-        mat4x4 mat[2] = {m_camera->projection, m_camera->view};
+        mat4x4 mat[2] = {m_camera->proj, m_camera->view};
         m_ubo->sub_data(0, sizeof(mat4x4) * 2, mat);
-        
+
 
     }
     void basic_scene::render_frame()

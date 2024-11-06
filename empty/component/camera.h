@@ -15,7 +15,7 @@ namespace emt
 
         void internal_update();
 
-        mat4x4 projection;
+        mat4x4 proj;
         mat4x4 view;
         mat4x4 local;
 
