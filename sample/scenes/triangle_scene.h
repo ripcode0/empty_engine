@@ -2,6 +2,7 @@
 
 #include "system/scene.h"
 #include "core/typedef.h"
+#include "graphics/graphics_context.h"
 
 namespace emt
 {
@@ -15,6 +16,7 @@ namespace emt
         void render_frame() override;
         void release_frame() override;
 
+        graphics_context* m_context;
         //ibuffer* m_vbo{};
         vertex_buffer* m_vbo;
         ibuffer* m_ibo{};
@@ -38,6 +40,9 @@ namespace emt
         
         camera* m_camera{};
 
+
+        void create_grid();
+        vertex_buffer* m_grid_buffer;
 
 
        

@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <ostream>
 #include <iomanip>
+#include <algorithm>
 
 struct vec2f
 {

@@ -13,6 +13,12 @@ namespace emt
         
         void update_frame(float dt);
 
+        
+        const mat4x4& get_projection_data(){
+            return proj;
+        }
+    
+
         void internal_update();
 
         mat4x4 proj;

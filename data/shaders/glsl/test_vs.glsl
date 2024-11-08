@@ -7,7 +7,7 @@ layout(location = 0) in vec3 pos;
 layout(location = 1) in vec3 color;
 
 //layout(buffer_address) readonly uniform uint64_t vbo;
-layout (std140, binding = 0) uniform ubo{
+layout (std140, row_major, binding = 0) uniform ubo{
     mat4 proj;
     mat4 view;
 };
@@ -22,7 +22,7 @@ out struct {
 void main()
 {
     //vec3 pos = fetchFromBuffer(vbo, gl_VertexID);
-    gl_Position = view * proj * vec4(pos, 1);
+    gl_Position = proj * view * vec4(pos, 1);
     ps_in.color = vec3(1,0,0);
 }
 

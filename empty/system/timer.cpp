@@ -24,7 +24,7 @@ namespace emt
             frame_count = 0;
             last_time = current_time;
 
-            std::printf("%f\n", fps);
+            printf("%f\n", fps);
         }
     }
 

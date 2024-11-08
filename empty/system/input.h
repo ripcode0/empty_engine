@@ -4,6 +4,17 @@
 
 namespace emt
 {
+    enum key : int
+    {
+        lmb = 0x01,
+        rmb = 0x02,
+        mmb = 0x04,
+        w = 0x57,
+        a = 0x41,
+        s = 0x53,
+        d = 0x4
+    };
+
     struct input
     {
         input() = default;

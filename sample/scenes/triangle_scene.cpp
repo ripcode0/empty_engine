@@ -14,10 +14,11 @@ namespace emt
         context::get_viewport(&vp);
 
         float ratio = vp.width / vp.height;
-        m_camera = new emt::camera(90.f, ratio, 0.01f, 1000.f);    
-        m_camera->look_at({0,1,-5}, {0,0,0});    
+        m_camera = new emt::camera(45.f, ratio, 0.001f, 1000.f);    
+        m_camera->look_at({0.f,5.f,-5.f}, {0,0,0});    
         //m_camera->pos = {0.f, 0.f, -2.f};
         //m_camera->internal_update();
+        
 
         vertex_pc vertices[] = {
             {{-0.5f,-0.5f,0.f},{1.f, 0.f, 0.f}},
@@ -103,7 +104,7 @@ namespace emt
         context::set_index_buffer(m_ibo, format::r32_uint);
         context::set_vertex_shader(m_vs);
         context::set_pixel_shader(m_ps);
-        context::set_geometry_shader(m_gs);
+        //context::set_geometry_shader(m_gs);
         context::set_uniform_buffer(0, m_ubo);
         
  
@@ -111,7 +112,7 @@ namespace emt
         context::draw_indexed(3, 0);
 
         context::set_geometry_shader(nullptr);
-        context::draw_indexed(3, 0);
+        //context::draw_indexed(3, 0);
 
         context::swap_buffers();
     }
@@ -119,5 +120,18 @@ namespace emt
     {
         graphics::release_buffer(m_vbo);
         
+    }
+    void basic_scene::create_grid()
+    {
+        int slice = 3;
+        int size = 3;
+
+        std::vector<vertex_pc> vertices;
+
+        for(int i = -size; i <= size; i++){
+            float x = (float)i;
+            float y = 0.f;
+            //float z = 
+        }
     }
 } // namespace emt
