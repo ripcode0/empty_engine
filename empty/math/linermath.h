@@ -986,3 +986,15 @@ inline void Rect::OffsetRect(int x, int y, Rect* src)
 	src->w += x * 2;
 	src->h += y * 2;
 }
+
+// namespace math
+// {
+// 	float degree_to_radians(float deg){
+// 		return deg * (M_PI / 180.f);
+// 	}
+
+// 	float radian_to_degree(float rad){
+// 		return rad * (180.f / M_PI);
+// 	}
+// } // namespace math
+

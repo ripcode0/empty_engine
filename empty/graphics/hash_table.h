@@ -10,7 +10,7 @@ namespace emt
     {
         return lhs.location == rhs.location &&
            lhs.format == rhs.format &&
-           lhs.format_size == rhs.format_size &&
+           //lhs.format_size == rhs.format_size &&
            lhs.stride == rhs.stride &&
            lhs.offset == rhs.offset;
     }
@@ -18,11 +18,11 @@ namespace emt
     {
         std::size_t operator()(const vertex_attrib& attr){
             std::size_t hash0 = std::hash<uint>()(attr.location);
-            std::size_t hash1 = std::hash<int>()(attr.format);
-            std::size_t hash2 = std::hash<uint>()(attr.format_size);
-            std::size_t hash3 = std::hash<uint>()(attr.stride);
-            std::size_t hash4 = std::hash<uint>()(attr.offset);
-            return hash0 ^ (hash1 << 1) ^ (hash2 << 2) ^ (hash3 << 3) ^ (hash4 << 4);
+            std::size_t hash1 = std::hash<uint>()(attr.format);
+            //std::size_t hash2 = std::hash<uint>()(attr.format_size);
+            std::size_t hash2 = std::hash<uint>()(attr.stride);
+            std::size_t hash3 = std::hash<uint>()(attr.offset);
+            return hash0 ^ (hash1 << 1) ^ (hash2 << 2) ^ (hash3 << 3);
         }
     };
 

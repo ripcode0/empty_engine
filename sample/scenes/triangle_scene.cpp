@@ -4,6 +4,7 @@
 #include "graphics/opengl/gl_config.h"
 #include "graphics/buffer.h"
 #include "component/camera.h"
+#include "graphics/graphics_context.h"
 
 namespace emt
 {
@@ -11,6 +12,8 @@ namespace emt
     {
         viewport vp{};
 
+        
+        
         context::get_viewport(&vp);
 
         float ratio = vp.width / vp.height;
@@ -45,8 +48,8 @@ namespace emt
         graphics::create_buffer(buffer_info, &m_ibo);
 
         vertex_attrib attr[] = {
-            {0, vertex_format_float, 3, sizeof(vertex_pc), 0,0},
-            {1, vertex_format_float, 3, sizeof(vertex_pc), offsetof(vertex_pc, vertex_pc::color), 0}
+            {0, format::rgb32_float, sizeof(vertex_pc), 0,0},
+            {1, format::rgb32_float, sizeof(vertex_pc), offsetof(vertex_pc, vertex_pc::color), 0}
         };
 
         input_layout_create_info input_info{};
@@ -107,7 +110,7 @@ namespace emt
         //context::set_geometry_shader(m_gs);
         context::set_uniform_buffer(0, m_ubo);
         
- 
+        context::set_topology(topology::triangles);
 
         context::draw_indexed(3, 0);
 

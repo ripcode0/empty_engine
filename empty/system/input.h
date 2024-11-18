@@ -12,7 +12,7 @@ namespace emt
         w = 0x57,
         a = 0x41,
         s = 0x53,
-        d = 0x4
+        d = 0x44
     };
 
     struct input

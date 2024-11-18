@@ -83,6 +83,11 @@ namespace emt
         shared_context->set_uniform_buffer_t(index, buffer);
     }
 
+    void context::set_topology(const topology &topology)
+    {
+        shared_context->set_topology_t(topology);
+    }
+
     void context::swap_buffers()
     {
         shared_context->swap_buffers_t();

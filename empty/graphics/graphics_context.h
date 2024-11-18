@@ -2,6 +2,8 @@
 
 #include "core/typedef.h"
 
+#define g_context graphics_context::get_shared_context()
+
 namespace emt
 {
     struct graphics_context
@@ -11,6 +13,7 @@ namespace emt
         graphics_context& operator=(const graphics_context& rhs) = delete;
 
         virtual void set_viewport(const viewport& viewport) = 0;
+        
 
         inline static graphics_context* get_shared_context(){
             return shared_context;

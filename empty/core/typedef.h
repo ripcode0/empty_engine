@@ -108,35 +108,54 @@ namespace emt
         vertex_format_double
     };
 
-    enum class format : uint
+    enum format 
     {
         r8_uint,
-        rg8_uint,
-        rgb8_uint,
-        rgba8_uint,
-        rgba8,
-        r16_uint,       //unsigned short
-        rg16_uint,
-        rgb16_uint,
-        rgba16_uint,
-        r32,
-        r32_uint,
-        rgb32, 
-        rgba32
-    };
-
-    enum furmat{
-        r8_uint,
+        r8_sint,
         r8_unorm,
-
+        r8_snorm,
+        r16_float,
+        r16_unorm,
+        t16_uint,
+        r16_sint,
+        r16_snorm,
+        rg8_uint,
+        rb8_sint,
+        rb8_unorm,
+        rb8_snorm,
+        d24_unorm_s8_uint,
+        r32_float,
+        r32_uint,       //unsigned short
+        r32_sint,
+        rg16_float,
+        rg16_uint,
+        rg16_sint,
+        rg16_unorm,
+        rg16_snorm,
+        rgba8_uint,
+        rgba8_sint,
+        rgba8_unorm,
+        rgba8_snorm,
+        rgba16_float,
+        rgba16_uint,
+        rgba16_unorm,
+        rgb32_float,
+        rgb32_uint,
+        rgb32_sint,
+        rgba32_float,
+        rgba32_uint,
+        rgba32_sint
     };
-    
+
+ 
+   
 
     struct vertex_attrib
     {
         uint location;
-        vertex_format format;
-        uint format_size;
+        //vertex_format format;
+        format format;
+        //uint format_size;
         uint stride;
         uint offset;
         bool instanced;
@@ -155,7 +174,7 @@ namespace emt
     };
 
     enum class topology : uint{
-        points, lines, triangles
+        points, lines,line_strip, triangles, triangle_strip
     };
     
     class scene;

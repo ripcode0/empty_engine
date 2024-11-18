@@ -25,8 +25,14 @@ namespace emt
         glCreateVertexArrays(1, &vao);
         for(uint i =0; i < info.attr_size; ++i){
             vertex_attrib& attr = info.p_attrib[i];
+
+            //format component count, format type
+            auto fmt = gl_transform::get_gl_format(attr.format);
+            auto format_count  = fmt.first;
+            auto format_type = fmt.second;
+            
             glEnableVertexArrayAttrib(vao, i);
-            glVertexArrayAttribFormat(vao, attr.location, attr.format_size, get_gl_format(attr.format),
+            glVertexArrayAttribFormat(vao, attr.location, format_count, format_type,
              GL_FALSE, attr.offset);
              uint binding_index = 0;
              if(attr.instanced) binding_index = 1;

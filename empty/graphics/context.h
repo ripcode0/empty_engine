@@ -33,7 +33,7 @@ namespace emt{
 
         //uniform
         static void set_uniform_buffer(uint index, uniform_buffer* buffer);
-        
+        static void set_topology(const topology& topology);
         static void swap_buffers();
 
         //context abstrct function
@@ -62,7 +62,7 @@ namespace emt{
         virtual void set_geometry_shader_t(const geometry_shader* shader) = 0;
         virtual void draw_indexed_t(uint count, uint offset) = 0;
         virtual void set_uniform_buffer_t(uint index, uniform_buffer* buffer) = 0;
-
+        virtual void set_topology_t(const topology& topology) = 0;
         virtual void swap_buffers_t() = 0;
 
         inline static context* shared_context{};

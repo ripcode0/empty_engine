@@ -33,6 +33,7 @@ namespace emt
         void draw_indexed_t(uint count, uint offset) override;
 
         void set_uniform_buffer_t(uint index, uniform_buffer* buffer) override;
+        void set_topology_t(const topology& topology) override;
         void swap_buffers_t() override;
 
         HGLRC m_glrc{};
@@ -56,7 +57,7 @@ namespace emt
 
         uint m_shader_pipeline{};
         
-        topology current_topology;
+        topology m_topology;
 
         
 

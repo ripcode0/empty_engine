@@ -15,6 +15,7 @@ namespace emt
         glCreateProgramPipelines(1, &m_shader_pipeline);
         glBindProgramPipeline(m_shader_pipeline);
         wglSwapIntervalEXT(vsync ? 1 : 0);
+        m_topology = topology::triangles;
         graphics::reserve_graphics_memories();
     }
 
@@ -144,13 +145,8 @@ namespace emt
 
     void gl_context::draw_indexed_t(uint count, uint offset)
     {
-        #ifdef _DEBUG
-        if(!m_asm.buffers[0] && !m_vao && !m_ibo){
-            
-        }
-        #endif
-        
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        auto topology = gl_transform::get_topology(m_topology);
+        glDrawElements(topology, count, GL_UNSIGNED_INT, nullptr);
     }
 
     void gl_context::set_uniform_buffer_t(uint index, uniform_buffer *buffer)
@@ -162,6 +158,13 @@ namespace emt
             glBindBufferBase(GL_UNIFORM_BUFFER, index, ubo);
         }else{
             glBindBufferBase(GL_UNIFORM_BUFFER, index, NULL);
+        }
+    }
+
+    void gl_context::set_topology_t(const topology &topology)
+    {
+        if(m_topology != topology){
+            m_topology = topology;
         }
     }
 

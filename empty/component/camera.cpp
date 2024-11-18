@@ -86,13 +86,18 @@ namespace emt
         camera->forward = vec3f(r[0][2], r[1][2], r[2][2]).normalized();
 
 
-        if(input::is_key_pressed('W')){
+        if(input::is_key_pressed(key::w)){
             camera->pos += camera->forward * speed * dt;
         }
-        if(input::is_key_pressed('S')){
+        if(input::is_key_pressed(key::s)){
             camera->pos -= camera->forward * speed * dt;
         }
-
+        if(input::is_key_pressed(key::a)){
+            camera->pos -= camera->right * speed * dt;
+        }
+        if(input::is_key_pressed(key::d)){
+            camera->pos += camera->right * speed * dt;
+        }
         camera->internal_update();
         
         
